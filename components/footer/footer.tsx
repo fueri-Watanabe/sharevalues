@@ -1,3 +1,6 @@
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+
 const Footer = () => {
   return (
     <footer className="border-t">
@@ -13,13 +16,13 @@ const Footer = () => {
             </span>
           </div>
           <div className="flex flex-row justify-center items-center gap-2 order-1 lg:order-2">
-            {/* <Link
+            <Link
               href={"https://github.com/fueri-Watanabe"}
               target="_blank"
               className="rounded-full p-1"
             >
-              <SiGithub className="w-7 h-7" />
-            </Link> */}
+              <GitHubLogoIcon className="w-7 h-7" />
+            </Link>
           </div>
         </div>
       </div>

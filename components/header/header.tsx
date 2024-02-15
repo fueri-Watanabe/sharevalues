@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/tools/modeToggle";
+import PostModal from "../parts/postModal";
 
 const Header = () => {
   return (
@@ -8,7 +8,7 @@ const Header = () => {
         <p>sharevalues</p>
       </div>
       <div className="flex items-center gap-6">
-        <Button>投稿</Button>
+        <PostModal />
         <ModeToggle />
       </div>
     </header>
