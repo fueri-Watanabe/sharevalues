@@ -62,36 +62,38 @@ const PostCard = () => {
           </Accordion>
         </CardContent>
       )}
-      <CardFooter className="relative flex flex-col justify-center items-center gap-4 select-none">
-        <div className="flex">
-          <Button
-            onClick={postValue}
-            className="w-40 bg-red-800 hover:bg-red-900 active:bg-red-950 text-white rounded-r-none"
-            disabled={disabled}
-          >
-            <ArrowDownIcon />
-            低い
-          </Button>
-          <Button
-            onClick={postValue}
-            className="w-40 bg-blue-800 hover:bg-blue-900 active:bg-blue-950 text-white rounded-l-none"
-            disabled={disabled}
-          >
-            <ArrowUpIcon />
-            高い
-          </Button>
-        </div>
-        <div className="absolute">
-          <Button
-            onClick={postValue}
-            className="flex justify-center items-end text-[9px] w-20 h-10 bg-slate-800 hover:bg-slate-900 active:bg-slate-950 text-white rounded-t-full"
-            disabled={disabled}
-          >
-            <CornersIcon />
-            フィット
-          </Button>
-        </div>
-      </CardFooter>
+      {!disabled && (
+        <CardFooter className="relative flex flex-col justify-center items-center gap-4 select-none">
+          <div className="flex">
+            <Button
+              onClick={postValue}
+              className="w-40 bg-red-500 dark:bg-red-800 hover:bg-red-600 dark:hover:bg-red-900 active:bg-red-700 dark:active:bg-red-950 text-white rounded-r-none"
+              disabled={disabled}
+            >
+              <ArrowDownIcon />
+              低い
+            </Button>
+            <Button
+              onClick={postValue}
+              className="w-40 bg-blue-500 dark:bg-blue-800 hover:bg-blue-600 dark:hover:bg-blue-900 active:bg-blue-700 dark:active:bg-blue-950 text-white rounded-l-none"
+              disabled={disabled}
+            >
+              <ArrowUpIcon />
+              高い
+            </Button>
+          </div>
+          <div className="absolute">
+            <Button
+              onClick={postValue}
+              className="flex justify-center items-end text-[9px] w-20 h-10 bg-slate-500 dark:bg-slate-800 hover:bg-slate-600 dark:hover:bg-slate-900 active:bg-slate-700 dark:active:bg-slate-950 text-white rounded-t-full"
+              disabled={disabled}
+            >
+              <CornersIcon />
+              フィット
+            </Button>
+          </div>
+        </CardFooter>
+      )}
     </Card>
   );
 };
