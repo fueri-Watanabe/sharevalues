@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
-import { getDatabase, set, ref } from "@firebase/database";
+// import { getDatabase, set, ref } from "@firebase/database";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -34,6 +34,7 @@ const postSchema = z.object({
 
 export type PostSchemaType = z.infer<typeof postSchema>;
 
+// TODO PostModalコンポーネントのエラーを修正
 const PostModal = () => {
   const form = useForm<PostSchemaType>({
     resolver: zodResolver(postSchema),
