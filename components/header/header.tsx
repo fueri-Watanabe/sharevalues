@@ -8,7 +8,7 @@ const Header = () => {
         <p>sharevalues</p>
       </div>
       <div className="flex items-center gap-6">
-        {/* <PostModal /> */}
+        <PostModal />
         <ModeToggle />
       </div>
     </header>
