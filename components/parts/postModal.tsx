@@ -22,11 +22,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
-import { getDatabase, set, ref } from "@firebase/database";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useTransition } from "react";
+import { db } from "@/firebase/client";
+import { doc, setDoc, collection } from "firebase/firestore";
 
 const PostSchema = z.object({
   message: z
@@ -42,13 +43,11 @@ const PostModal = () => {
     resolver: zodResolver(PostSchema),
   });
   const [isPending, startTransition] = useTransition();
-  // TODO FirebaseDBに登録処理を作成
   const sendPost = async (data: PostSchemaType) => {
     startTransition(async () => {
       console.log(data);
-      // const db = getDatabase();
-      // const dbRef = ref(db, "post");
-      // await set(dbRef, { posts: data.message });
+      const newPost = doc(collection(db, "posts"));
+      await setDoc(newPost, data);
     });
   };
 
