@@ -1,9 +1,9 @@
 import { initializeApp, getApps } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-import { getAuth } from "firebase/auth";
-import { getFunctions } from "firebase/functions";
+// import { getStorage } from "firebase/storage";
+// import { getAuth } from "firebase/auth";
+// import { getFunctions } from "firebase/functions";
 // TODO envにする
 const firebaseConfig = {
   apiKey: "AIzaSyCM07p8cMQLAScnyuWw3A1t-eyILsYi0fA",
@@ -21,6 +21,6 @@ if (!getApps()?.length) {
 
 // export const analytics = getAnalytics();
 export const db = getFirestore();
-export const storage = getStorage();
-export const auth = getAuth();
-export const funcions = getFunctions();
+// export const storage = getStorage();
+// export const auth = getAuth();
+// export const funcions = getFunctions();
