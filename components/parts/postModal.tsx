@@ -46,8 +46,12 @@ const PostModal = () => {
   const sendPost = async (data: PostSchemaType) => {
     startTransition(async () => {
       console.log(data);
+      const obj = {
+        ...data,
+        createdAt: new Date().getTime(),
+      };
       const newPost = doc(collection(db, "posts"));
-      await setDoc(newPost, data);
+      await setDoc(newPost, obj);
     });
   };
 

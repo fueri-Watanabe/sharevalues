@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 // import { getStorage } from "firebase/storage";
 // import { getAuth } from "firebase/auth";
 // import { getFunctions } from "firebase/functions";
-// TODO envにする
+
 const firebaseConfig = {
   apiKey: "AIzaSyCM07p8cMQLAScnyuWw3A1t-eyILsYi0fA",
   authDomain: "sharevalues-3a252.firebaseapp.com",
