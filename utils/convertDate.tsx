@@ -1,3 +1,5 @@
+"use client";
+
 import { format } from "date-fns";
 
 // 記日付の表を（yyyy年MM月dd日）に変換

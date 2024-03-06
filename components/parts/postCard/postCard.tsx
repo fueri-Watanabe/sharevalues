@@ -119,7 +119,7 @@ const PostCard = ({
       </CardContent>
       <CardFooter className="flex justify-end">
         <CardDescription>
-          {/* {convertDate_yMd_JP(new Date(postData.createdAt))} */}
+          {convertDate_yMd_JP(new Date(postData.createdAt))}
         </CardDescription>
       </CardFooter>
     </Card>
