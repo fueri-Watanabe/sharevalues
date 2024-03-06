@@ -23,7 +23,7 @@ import { convertDate_yMd_JP } from "@/utils/convertDate";
 import { addDoc, doc, setDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/client";
 import { useTransition } from "react";
-
+// TODO デプロイ後のエラーの修正
 const PostCard = ({
   postData,
   postId,
@@ -46,6 +46,7 @@ const PostCard = ({
     });
   };
   // TODO 分析図を作成する。
+  // TODO rechartのinstall、uiにchartフォルダを作成。
   return (
     <Card className="w-[540px]">
       <CardHeader>
