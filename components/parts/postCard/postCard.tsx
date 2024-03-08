@@ -20,10 +20,19 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PostData } from "@/types/post";
 import { convertDate_yMd_JP } from "@/utils/convertDate";
-import { addDoc, doc, setDoc, collection } from "firebase/firestore";
+import {
+  addDoc,
+  doc,
+  setDoc,
+  collection,
+  getDoc,
+  getDocs,
+  getCountFromServer,
+} from "firebase/firestore";
 import { db } from "@/firebase/client";
 import { useTransition } from "react";
-// TODO デプロイ後のエラーの修正
+import BarChartComponent from "@/components/charts/barChart";
+
 const PostCard = ({
   postData,
   postId,
@@ -33,6 +42,11 @@ const PostCard = ({
 }) => {
   const [showData, setShowData] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [valuesCount, setValuesCount] = useState({
+    lowValue: 0,
+    justValue: 0,
+    highValue: 0,
+  });
   const [isPending, startTransition] = useTransition();
 
   const postValue = (value: string) => {
@@ -40,6 +54,18 @@ const PostCard = ({
       const valuesRef = doc(db, "posts", postId);
       await addDoc(collection(valuesRef, value), {
         createdAt: new Date().getTime(),
+      });
+      const valuesSnap = await getDoc(valuesRef);
+      const highColl = collection(valuesRef, "high");
+      const lowColl = collection(valuesRef, "low");
+      const justColl = collection(valuesRef, "just");
+      const highSnaps = await getCountFromServer(highColl);
+      const lowSnaps = await getCountFromServer(lowColl);
+      const justSnaps = await getCountFromServer(justColl);
+      setValuesCount({
+        lowValue: lowSnaps.data().count,
+        justValue: justSnaps.data().count,
+        highValue: highSnaps.data().count,
       });
       setShowData(true);
       setDisabled(true);
@@ -62,21 +88,26 @@ const PostCard = ({
                   <Tabs defaultValue="ratio">
                     <TabsList>
                       <TabsTrigger value="ratio">割合</TabsTrigger>
-                      <TabsTrigger value="age">年代別</TabsTrigger>
-                      <TabsTrigger value="date">年代別</TabsTrigger>
-                      <TabsTrigger value="region">地域別</TabsTrigger>
+                      <TabsTrigger value="age">年代</TabsTrigger>
+                      <TabsTrigger value="date">日付</TabsTrigger>
+                      <TabsTrigger value="region">地域</TabsTrigger>
                     </TabsList>
                     <TabsContent value="ratio" className="h-80 border">
-                      割合
+                      <BarChartComponent values={valuesCount} />
+                      <div>
+                        <p>高い：{valuesCount.highValue}</p>
+                        <p>ジャスト：{valuesCount.justValue}</p>
+                        <p>低い：{valuesCount.lowValue}</p>
+                      </div>
                     </TabsContent>
                     <TabsContent value="age" className="h-80 border">
-                      年代別
+                      年代
                     </TabsContent>
                     <TabsContent value="date" className="h-80 border">
-                      年代別
+                      日付
                     </TabsContent>
                     <TabsContent value="region" className="h-80 border">
-                      地域別
+                      地域
                     </TabsContent>
                   </Tabs>
                 </AccordionContent>
