@@ -1,5 +1,6 @@
 import { ModeToggle } from "@/components/tools/modeToggle";
 import PostModal from "../parts/postModal";
+import UserModal from "../parts/userModal";
 
 const Header = () => {
   return (
@@ -8,6 +9,7 @@ const Header = () => {
         <p>sharevalues</p>
       </div>
       <div className="flex items-center gap-6">
+        <UserModal />
         <PostModal />
         <ModeToggle />
       </div>

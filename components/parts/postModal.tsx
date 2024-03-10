@@ -74,12 +74,7 @@ const PostModal = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Textarea
-                        // id="message"
-                        placeholder="例）600円のタバコ"
-                        // {...register("message", { required: true })}
-                        {...field}
-                      />
+                      <Textarea placeholder="例）600円のタバコ" {...field} />
                     </FormControl>
                     <FormDescription className="text-sm text-muted-foreground">
                       80文字以内で記入してください。
@@ -89,7 +84,7 @@ const PostModal = () => {
                 )}
               />
               <Button type="submit" disabled={isPending}>
-                Send message
+                投稿する
               </Button>
             </div>
           </form>
