@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ArrowUpIcon, ArrowDownIcon, CornersIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -23,22 +23,24 @@ import { convertDate_yMd_JP } from "@/utils/convertDate";
 import {
   addDoc,
   doc,
-  setDoc,
   collection,
-  getDoc,
-  getDocs,
   getCountFromServer,
 } from "firebase/firestore";
 import { db } from "@/firebase/client";
 import { useTransition } from "react";
 import BarChartComponent from "@/components/charts/barChart";
+import { historyKey } from "@/const/const";
 
 const PostCard = ({
   postData,
   postId,
+  postHistory,
+  setPostHistory,
 }: {
   postData: PostData;
   postId: string;
+  postHistory: string[];
+  setPostHistory: any;
 }) => {
   const [showData, setShowData] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -48,14 +50,17 @@ const PostCard = ({
     highValue: 0,
   });
   const [isPending, startTransition] = useTransition();
-
+  // TODO データの取得・ボタンの無効・グラフへのセットを一つの関数にまとめる。
   const postValue = (value: string) => {
     startTransition(async () => {
       const valuesRef = doc(db, "posts", postId);
       await addDoc(collection(valuesRef, value), {
         createdAt: new Date().getTime(),
       });
-      const valuesSnap = await getDoc(valuesRef);
+      const newHistory = [...postHistory, postId];
+      await setPostHistory([...postHistory, postId]);
+      localStorage.setItem(historyKey, JSON.stringify(newHistory));
+      // const valuesSnap = await getDoc(valuesRef);
       const highColl = collection(valuesRef, "high");
       const lowColl = collection(valuesRef, "low");
       const justColl = collection(valuesRef, "just");
@@ -79,8 +84,10 @@ const PostCard = ({
     error(...args);
   };
 
-  // TODO 分析図を作成する。
-  // TODO rechartのinstall、uiにchartフォルダを作成。
+  useEffect(() => {
+    postHistory.some((id) => id == postId) && setShowData(true);
+  }, []);
+
   return (
     <Card className="w-[540px]">
       <CardHeader>
@@ -101,8 +108,10 @@ const PostCard = ({
                       <TabsTrigger value="region">地域</TabsTrigger>
                     </TabsList>
                     <TabsContent value="ratio" className="h-80 border">
-                      <BarChartComponent values={valuesCount} />
-                      <div>
+                      <div className="h-72 flex justify-center items-center">
+                        <BarChartComponent values={valuesCount} />
+                      </div>
+                      <div className="flex flex-row justify-center gap-6">
                         <p>高い：{valuesCount.highValue}</p>
                         <p>ジャスト：{valuesCount.justValue}</p>
                         <p>低い：{valuesCount.lowValue}</p>

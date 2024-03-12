@@ -2,52 +2,37 @@
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../../ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState, useTransition } from "react";
-import { getData, getNames } from "country-list";
+import { getData } from "country-list";
 import Registered from "./registered";
-
-const ageSelect = [
-  { value: 10, age: "20歳未満" },
-  { value: 20, age: "20-29歳" },
-  { value: 30, age: "30-39歳" },
-  { value: 40, age: "40-49歳" },
-  { value: 50, age: "50-59歳" },
-  { value: 60, age: "60-69歳" },
-  { value: 70, age: "70-79歳" },
-  { value: 80, age: "80歳以上" },
-];
+import { userKey } from "@/const/const";
+import { ageSelect } from "@/const/data";
 
 const UserSchema = z.object({
   age: z.string({ required_error: "年齢を選択してください。" }),
@@ -59,7 +44,7 @@ export type PostSchemaType = z.infer<typeof UserSchema>;
 const UserModal = () => {
   let userData: { age: string; country: string } | undefined;
   if (typeof window !== "undefined") {
-    const storedValue = localStorage.getItem("user");
+    const storedValue = localStorage.getItem(userKey);
     userData = storedValue && JSON.parse(storedValue);
   }
   console.log(userData);
@@ -76,7 +61,7 @@ const UserModal = () => {
   const setUserData = (data: PostSchemaType) => {
     startTransition(async () => {
       console.log(data);
-      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem(userKey, JSON.stringify(data));
     });
     setHandleContents(false);
   };

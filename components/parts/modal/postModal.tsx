@@ -28,6 +28,7 @@ import { z } from "zod";
 import { useTransition } from "react";
 import { db } from "@/firebase/client";
 import { doc, setDoc, collection } from "firebase/firestore";
+import { postCollName } from "@/const/const";
 
 const PostSchema = z.object({
   message: z
@@ -49,7 +50,7 @@ const PostModal = () => {
         ...data,
         createdAt: new Date().getTime(),
       };
-      const newPost = doc(collection(db, "posts"));
+      const newPost = doc(collection(db, postCollName));
       await setDoc(newPost, obj);
     });
   };
