@@ -10,7 +10,6 @@ import {
 } from "recharts";
 
 const BarChartComponent = ({ values }: { values: any }) => {
-  console.log(values);
   const data = [
     {
       lowName: "低い",

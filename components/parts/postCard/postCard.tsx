@@ -71,6 +71,14 @@ const PostCard = ({
       setDisabled(true);
     });
   };
+
+  // RechartsのdefaultPropsによるエラーメッセージの非表示
+  const error = console.error;
+  console.error = (...args: any) => {
+    if (/defaultProps/.test(args[0])) return;
+    error(...args);
+  };
+
   // TODO 分析図を作成する。
   // TODO rechartのinstall、uiにchartフォルダを作成。
   return (

@@ -1,6 +1,6 @@
 import { ModeToggle } from "@/components/tools/modeToggle";
-import PostModal from "../parts/postModal";
-import UserModal from "../parts/userModal";
+import PostModal from "../parts/modal/postModal";
+import UserModal from "../parts/modal/userModal";
 
 const Header = () => {
   return (

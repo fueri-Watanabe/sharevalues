@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -21,7 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "../../ui/textarea";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -43,9 +43,8 @@ const PostModal = () => {
     resolver: zodResolver(PostSchema),
   });
   const [isPending, startTransition] = useTransition();
-  const sendPost = async (data: PostSchemaType) => {
+  const sendPost = (data: PostSchemaType) => {
     startTransition(async () => {
-      console.log(data);
       const obj = {
         ...data,
         createdAt: new Date().getTime(),
