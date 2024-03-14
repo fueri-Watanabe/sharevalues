@@ -25,10 +25,11 @@ import { Textarea } from "../../ui/textarea";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { db } from "@/firebase/client";
 import { doc, setDoc, collection } from "firebase/firestore";
 import { postCollName } from "@/const/const";
+import Registered from "./registered";
 
 const PostSchema = z.object({
   message: z
@@ -40,10 +41,13 @@ const PostSchema = z.object({
 export type PostSchemaType = z.infer<typeof PostSchema>;
 
 const PostModal = () => {
+  const [isPending, startTransition] = useTransition();
+  const [handleContents, setHandleContents] = useState(true);
+
   const form = useForm<PostSchemaType>({
     resolver: zodResolver(PostSchema),
   });
-  const [isPending, startTransition] = useTransition();
+
   const sendPost = (data: PostSchemaType) => {
     startTransition(async () => {
       const obj = {
@@ -52,43 +56,51 @@ const PostModal = () => {
       };
       const newPost = doc(collection(db, postCollName));
       await setDoc(newPost, obj);
+      form.reset();
+      setHandleContents(false);
     });
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>投稿</Button>
+        <Button type="button" onClick={() => setHandleContents(true)}>
+          投稿
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>あなたの価値観を共有しましょう</DialogTitle>
           <DialogDescription>1日3回まで 残り回数：〇回</DialogDescription>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(sendPost)}>
-            <div className="grid w-full gap-2">
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea placeholder="例）600円のタバコ" {...field} />
-                    </FormControl>
-                    <FormDescription className="text-sm text-muted-foreground">
-                      80文字以内で記入してください。
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={isPending}>
-                投稿する
-              </Button>
-            </div>
-          </form>
-        </Form>
+        {handleContents ? (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(sendPost)}>
+              <div className="grid w-full gap-2">
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea placeholder="例）600円のタバコ" {...field} />
+                      </FormControl>
+                      <FormDescription className="text-sm text-muted-foreground">
+                        80文字以内で記入してください。
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" disabled={isPending}>
+                  投稿する
+                </Button>
+              </div>
+            </form>
+          </Form>
+        ) : (
+          <Registered modalType={"post"} />
+        )}
         <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>

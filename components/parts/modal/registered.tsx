@@ -10,11 +10,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const Registered = () => {
+const Registered = ({ modalType }: { modalType: string }) => {
   return (
     <>
-      <div className="flex justify-center items-center h-60">
-        <p>ユーザーデータを登録しました。</p>
+      <div className="flex flex-col justify-center items-center gap-6 h-60">
+        <p>
+          {modalType == "user"
+            ? "ユーザーデータを登録しました。"
+            : "価値観を投稿しました。"}
+        </p>
+        {modalType == "user" || <p>これからも共有していきましょう。</p>}
       </div>
       <DialogFooter>
         <DialogClose asChild>

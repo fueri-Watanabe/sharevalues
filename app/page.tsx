@@ -13,7 +13,7 @@ export default function Home() {
   const [postDocs, setPostDocs] = useAtom(postDocsAtom);
   const user = useAtomValue(userAtom);
   const setHandleUserModal = useSetAtom(userModalAtom);
-
+  // TODO 投稿した後にデータ更新取得する処理を作成
   useEffect(() => {
     const getPosts = async () => {
       const postsRef = collection(db, postCollName);

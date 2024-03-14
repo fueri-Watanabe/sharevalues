@@ -33,7 +33,7 @@ import { getData } from "country-list";
 import Registered from "./registered";
 import { ageSelect } from "@/const/data";
 import { useAtom } from "jotai";
-import { postHistoryAtom, userAtom, userModalAtom } from "@/atoms/atom";
+import { userAtom, userModalAtom } from "@/atoms/atom";
 
 const UserSchema = z.object({
   age: z.string({ required_error: "年齢を選択してください。" }),
@@ -59,8 +59,8 @@ const UserModal = () => {
   const setUserData = (data: PostSchemaType) => {
     startTransition(async () => {
       setUser(data);
+      setHandleContents(false);
     });
-    setHandleContents(false);
   };
 
   return (
@@ -153,7 +153,7 @@ const UserModal = () => {
             </form>
           </Form>
         ) : (
-          <Registered />
+          <Registered modalType={"user"} />
         )}
       </DialogContent>
     </Dialog>
