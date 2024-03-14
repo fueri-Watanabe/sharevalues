@@ -28,11 +28,12 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { getData } from "country-list";
 import Registered from "./registered";
-import { userKey } from "@/const/const";
 import { ageSelect } from "@/const/data";
+import { useAtom } from "jotai";
+import { postHistoryAtom, userAtom, userModalAtom } from "@/atoms/atom";
 
 const UserSchema = z.object({
   age: z.string({ required_error: "年齢を選択してください。" }),
@@ -40,36 +41,30 @@ const UserSchema = z.object({
 });
 
 export type PostSchemaType = z.infer<typeof UserSchema>;
-
+// TODO localstorageのuserのデータをatomに格納して投票時に合わせて送信。
 const UserModal = () => {
-  let userData: { age: string; country: string } | undefined;
-  if (typeof window !== "undefined") {
-    const storedValue = localStorage.getItem(userKey);
-    userData = storedValue && JSON.parse(storedValue);
-  }
-  console.log(userData);
+  const [isPending, startTransition] = useTransition();
+  const [handleContents, setHandleContents] = useState(true);
+  const [handleUserModal, setHandleUserModal] = useAtom(userModalAtom);
+  const [user, setUser] = useAtom(userAtom);
+
   const form = useForm<PostSchemaType>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
-      age: userData ? userData.age : undefined,
-      country: "JP",
+      age: user ? user.age : undefined,
+      country: user ? user.country : "JP",
     },
   });
-  const [isPending, startTransition] = useTransition();
-  const [handleContents, setHandleContents] = useState(true);
-  const [open, setOpen] = useState(false);
+
   const setUserData = (data: PostSchemaType) => {
     startTransition(async () => {
-      console.log(data);
-      localStorage.setItem(userKey, JSON.stringify(data));
+      setUser(data);
     });
     setHandleContents(false);
   };
 
-  useEffect(() => setOpen(true), []);
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={handleUserModal} onOpenChange={setHandleUserModal}>
       <DialogTrigger asChild>
         <Button type="button" onClick={() => setHandleContents(true)}>
           ユーザー
@@ -82,10 +77,7 @@ const UserModal = () => {
         </DialogHeader>
         {handleContents ? (
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(setUserData)}
-              // className="flex flex-col items-center"
-            >
+            <form onSubmit={form.handleSubmit(setUserData)}>
               <div className="flex flex-col justify-center items-center gap-4 h-60">
                 <FormField
                   control={form.control}
@@ -95,7 +87,7 @@ const UserModal = () => {
                       <FormLabel>年齢</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={userData ? userData.age : undefined}
+                        defaultValue={user ? user.age : undefined}
                       >
                         <FormControl>
                           <SelectTrigger className="w-60">
@@ -127,7 +119,10 @@ const UserModal = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>居住国</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue="JP">
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={user ? user.country : "JP"}
+                      >
                         <FormControl>
                           <SelectTrigger className="w-60">
                             <SelectValue placeholder="国名を選択" />
@@ -151,12 +146,6 @@ const UserModal = () => {
                 />
               </div>
               <div className="flex justify-center">
-                <Button
-                  className="w-24"
-                  onClick={() => localStorage.removeItem("user")}
-                >
-                  reset
-                </Button>
                 <Button type="submit" disabled={isPending} className="w-24">
                   登録
                 </Button>

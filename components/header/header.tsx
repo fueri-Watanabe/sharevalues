@@ -1,6 +1,7 @@
 import { ModeToggle } from "@/components/tools/modeToggle";
 import PostModal from "../parts/modal/postModal";
 import UserModal from "../parts/modal/userModal";
+import ResetLocalStorageButton from "../tools/resetLocalStorage";
 
 const Header = () => {
   return (
@@ -11,6 +12,7 @@ const Header = () => {
       <div className="flex items-center gap-6">
         <UserModal />
         <PostModal />
+        {/* <ResetLocalStorageButton /> */}
         <ModeToggle />
       </div>
     </header>

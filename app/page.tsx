@@ -2,30 +2,27 @@
 
 import PostCard from "@/components/parts/postCard/postCard";
 import { db } from "@/firebase/client";
-import { PostData } from "@/types/post";
 import { getDocs, collection } from "firebase/firestore";
 import { useEffect } from "react";
-import { useAtom } from "jotai";
-import { postDocsAtom, postHistoryAtom } from "@/atoms/atom";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { postDocsAtom, userAtom, userModalAtom } from "@/atoms/atom";
 import Loading from "./loading";
-import { historyKey, postCollName } from "@/const/const";
+import { postCollName } from "@/const/const";
 
 export default function Home() {
-  const [postHistory, setPostHistory] = useAtom(postHistoryAtom);
   const [postDocs, setPostDocs] = useAtom(postDocsAtom);
+  const user = useAtomValue(userAtom);
+  const setHandleUserModal = useSetAtom(userModalAtom);
+
   useEffect(() => {
-    if (localStorage.hasOwnProperty(historyKey)) {
-      const history = localStorage.getItem(historyKey);
-      history && setPostHistory(JSON.parse(history));
-    } else {
-      localStorage.setItem(historyKey, JSON.stringify(postHistory));
-    }
     const getPosts = async () => {
       const postsRef = collection(db, postCollName);
       const postsSnap = await getDocs(postsRef);
       setPostDocs(postsSnap.docs);
     };
     getPosts();
+    // ユーザー未登録、登録モーダル表示
+    !user && setHandleUserModal(true);
   }, []);
   return (
     <>
@@ -33,17 +30,10 @@ export default function Home() {
         <main className="flex flex-col gap-12 py-6">
           {postDocs ? (
             postDocs.map((value, index) => {
-              console.log(value.data());
               const postData = value.data() as PostData;
               const postId = value.id;
               return (
-                <PostCard
-                  key={index}
-                  postData={postData}
-                  postId={postId}
-                  postHistory={postHistory}
-                  setPostHistory={setPostHistory}
-                />
+                <PostCard key={index} postData={postData} postId={postId} />
               );
             })
           ) : (
