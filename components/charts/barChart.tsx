@@ -37,7 +37,7 @@ const BarChartComponent = ({ values }: { values: any }) => {
           <Bar
             dataKey="lowValue"
             stackId="a"
-            className="fill-red-500 dark:fill-red-800"
+            className="fill-blue-500 dark:fill-blue-800"
           >
             <LabelList dataKey="lowName" fill="white" position="inside" />
           </Bar>
@@ -55,7 +55,7 @@ const BarChartComponent = ({ values }: { values: any }) => {
           <Bar
             dataKey="highValue"
             stackId="a"
-            className="fill-blue-500 dark:fill-blue-800"
+            className="fill-red-500 dark:fill-red-800"
           >
             <LabelList dataKey="highName" fill="white" position="inside" />
           </Bar>

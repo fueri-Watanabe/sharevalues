@@ -96,7 +96,7 @@ const PostCard = ({
     if (postHistory.some((id) => id == postId)) {
       dataExpansion();
     }
-  }, []);
+  }, [postHistory]);
 
   return (
     <Card className="w-[540px]">
@@ -148,7 +148,7 @@ const PostCard = ({
               <Button
                 type="button"
                 onClick={() => postValue("low")}
-                className="w-40 bg-red-500 dark:bg-red-800 hover:bg-red-600 dark:hover:bg-red-900 active:bg-red-700 dark:active:bg-red-950 text-white rounded-r-none"
+                className="w-40 bg-blue-500 dark:bg-blue-800 hover:bg-blue-600 dark:hover:bg-blue-900 active:bg-blue-700 dark:active:bg-blue-950 text-white rounded-l-none"
                 disabled={isPending || disabled}
               >
                 <ArrowDownIcon />
@@ -157,7 +157,7 @@ const PostCard = ({
               <Button
                 type="button"
                 onClick={() => postValue("high")}
-                className="w-40 bg-blue-500 dark:bg-blue-800 hover:bg-blue-600 dark:hover:bg-blue-900 active:bg-blue-700 dark:active:bg-blue-950 text-white rounded-l-none"
+                className="w-40 bg-red-500 dark:bg-red-800 hover:bg-red-600 dark:hover:bg-red-900 active:bg-red-700 dark:active:bg-red-950 text-white rounded-r-none"
                 disabled={isPending || disabled}
               >
                 <ArrowUpIcon />
