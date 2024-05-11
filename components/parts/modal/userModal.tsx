@@ -41,7 +41,7 @@ const UserSchema = z.object({
 });
 
 export type PostSchemaType = z.infer<typeof UserSchema>;
-// TODO localstorageのuserのデータをatomに格納して投票時に合わせて送信。
+
 const UserModal = () => {
   const [isPending, startTransition] = useTransition();
   const [handleContents, setHandleContents] = useState(true);
